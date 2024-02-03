@@ -88,6 +88,7 @@ outreg2 using dif_dif.doc, append ctitle(Homicide_rate) drop(i.anio i.codprov)
 
 
 
+
 *respuesta a Manuel
 
 
@@ -101,6 +102,56 @@ xtreg lnhom_rate l.lnhom_rate gob_GLmeses lndrogaco_l1 lndroga frontera ecuador 
 outreg2 using dif_dif.doc, append ctitle(Homicide_rate) drop(i.anio i.codprov)
 
 
+xtabond lnhom_rate gob_RCmeses lndroga lndrogaco_l1  , lags(1) artests(2) robust
+
+outreg2 using dif_dif.doc, append ctitle(Homicide_rate) drop(i.anio i.codprov)
+
+
+xtabond lnhom_rate gob_GLmeses lndroga lndrogaco_l1  , lags(1) artests(2) robust
+
+outreg2 using dif_dif.doc, append ctitle(Homicide_rate) drop(i.anio i.codprov)
+
+
+
+*prueba de raiz unitaria en los errores
+
+reg lnhom_rate l.lnhom_rate gob_GLmeses lndrogaco_l1 lndroga frontera ecuador i.puertos i.anio i.codprov
+
+predict res
+
+vif 
+
+xtunitroot llc res
+
+drop res
+
+
+*4 metodos de estimación
+
+
+reg lnhom_rate l.lnhom_rate gob_GLmeses lndrogaco_l1 lndroga frontera ecuador i.puertos i.anio i.codprov, robust
+
+outreg2 using dif_dif.doc, replace ctitle(Homicide_rate) drop(i.anio i.codprov)
+
+
+xtreg lnhom_rate l.lnhom_rate gob_GLmeses lndrogaco_l1 lndroga frontera ecuador i.puertos i.anio i.codprov, robust
+
+outreg2 using dif_dif.doc, append ctitle(Homicide_rate) drop(i.anio i.codprov)
+
+
+xtreg lnhom_rate l.lnhom_rate gob_GLmeses lndrogaco_l1 lndroga frontera ecuador i.puertos i.anio i.codprov, robust fe
+
+outreg2 using dif_dif.doc, append ctitle(Homicide_rate) drop(i.anio i.codprov)
+
+
+xtabond lnhom_rate gob_GLmeses lndroga lndrogaco_l1  , lags(1) artests(2) robust
+
+outreg2 using dif_dif.doc, append ctitle(Homicide_rate) drop(i.anio i.codprov)
+
+
+
+
+*nivel
 
 xtreg tasa_hom l.tasa_hom gob_RCmeses lndrogaco_l1 lndroga frontera ecuador i.puertos i.anio i.codprov, robust
 
@@ -122,6 +173,9 @@ use "C:\Users\jpjar\OneDrive\Desktop\Asamblea MP\dif en dif ecuador y colombia.d
 
 
 *modelo interactivo
+
+
+*base
 
 xtreg lnhom_rate gob_gl gob_lm i.anio i.codprov, robust
 
